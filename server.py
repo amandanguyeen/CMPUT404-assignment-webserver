@@ -1,5 +1,4 @@
 #  coding: utf-8 
-from re import I
 import socketserver
 import os 
 # Copyright 2013 Abram Hindle, Eddie Antonio Santos
