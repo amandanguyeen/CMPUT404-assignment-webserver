@@ -27,8 +27,14 @@ compatible) http://docs.python.org/2/library/socketserver.html
 
 External Sources
 https://stackoverflow.com/questions/44657829/css-file-blocked-mime-type-mismatch-x-content-type-options-nosniff
+
 https://stackoverflow.com/questions/38861763/send-css-over-python-socket-server
+
 https://stackoverflow.com/questions/36122461/trying-to-send-http-response-from-low-level-socket-server
+
 https://stackoverflow.com/questions/21214484/display-html-file-using-socketserver-in-python
-https://stackoverflow.com/questions/58475164/how-to-send-css-javascirpt-files-along-with-html-using-pythons-socketio
+
+https://stackoverflow.com/questions/58475164/
+how-to-send-css-javascirpt-files-along-with-html-using-pythons-socketio
+
 https://linuxize.com/post/python-get-change-current-working-directory/#:~:text=To%20find%20the%20current%20working,chdir(path)%20.

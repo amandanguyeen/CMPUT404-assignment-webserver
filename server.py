@@ -41,6 +41,7 @@ import os
 
 # try: curl -v -X GET http://127.0.0.1:8080/
 
+# Ulvi Ibrahimov, September 28, https://stackoverflow.com/questions/21214484/display-html-file-using-socketserver-in-python
 def readfile(folder_path):
     f = open(folder_path, 'r')
     data= ''
@@ -49,7 +50,6 @@ def readfile(folder_path):
     return data
 
 class MyWebServer(socketserver.BaseRequestHandler):
-    
     def handle(self):
         self.data = self.request.recv(1024).strip()
         print ("Got a request of: %s\n" % self.data)
@@ -75,23 +75,29 @@ class MyWebServer(socketserver.BaseRequestHandler):
             if "." in path and path[-1] == "/": #for some reason base.css gets turned into base.css/
                 path = path[:-1]
 
+            # No author, September 28 https://linuxize.com/post/python-get-change-current-working-directory/#:~:text=To%20find%20the%20current%20working,chdir(path)%20
             folder_path = os.getcwd() + "/www" + path
 
-            if ".html" in path or ".css" in path: # resolves the safety test
-                try: # exception handles if we get a path that doesn't exist in a folder
-                    if ".html" in path:
-                        data = readfile(folder_path)
-                        self.request.sendall(bytearray(f"HTTP/1.1 200 OK\r\ncontent-type: text/html\r\nConnection: close\r\n\r\n\r\n{data}" , 'utf-8'))
-
-                    elif ".css" in path:
-                        data = readfile(folder_path)
-                        self.request.sendall(bytearray(f"HTTP/1.1 200 OK\r\ncontent-type: text/css\r\nConnection: close\r\n\r\n\r\n{data}" , 'utf-8'))
-                except:
+            try: # exception handles if we get a path that doesn't exist in a folder
+                
+                #Sugam Mankad, September 28 https://stackoverflow.com/questions/58475164/how-to-send-css-javascirpt-files-along-with-html-using-pythons-socketio
+                # drew010, September 28, https://stackoverflow.com/questions/36122461/trying-to-send-http-response-from-low-level-socket-server
+                #Gord Thompson, September 28, https://stackoverflow.com/questions/44657829/css-file-blocked-mime-type-mismatch-x-content-type-options-nosniff
+                if ".html" in path:
+                    data = readfile(folder_path)
+                    self.request.sendall(bytearray(f"HTTP/1.1 200 OK\r\ncontent-type: text/html\r\nConnection: close\r\n\r\n\r\n{data}" , 'utf-8'))
+                
+                # James, September 27 https://stackoverflow.com/questions/38861763/send-css-over-python-socket-server
+                elif ".css" in path:
+                    data = readfile(folder_path)
+                    self.request.sendall(bytearray(f"HTTP/1.1 200 OK\r\ncontent-type: text/css\r\nConnection: close\r\n\r\n\r\n{data}" , 'utf-8'))
+                
+                else:
                     self.request.sendall(bytearray(
-                                "HTTP/1.1 404 NOT FOUND\r\nConnection: close\r\n\r\n\r\n", 'utf-8'))
-            else: 
+                            "HTTP/1.1 404 NOT FOUND\r\nConnection: close\r\n\r\n\r\n", 'utf-8'))
+            except:
                 self.request.sendall(bytearray(
-                                "HTTP/1.1 404 NOT FOUND\r\nConnection: close\r\n\r\n\r\n", 'utf-8'))
+                            "HTTP/1.1 404 NOT FOUND\r\nConnection: close\r\n\r\n\r\n", 'utf-8'))
 
 if __name__ == "__main__":
     HOST, PORT = "localhost", 8080
