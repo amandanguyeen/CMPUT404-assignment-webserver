@@ -67,8 +67,8 @@ class MyWebServer(socketserver.BaseRequestHandler):
             if "." not in path and "/" != path[-1]:
                 self.request.sendall(bytearray(
                             f"HTTP/1.1 301 MOVED PERMANENTLY\r\nLocation: {path}/\r\n", 'utf-8'))
-                            
-            ## if its specifically 
+
+            ## if its not .css or already has .html
             if "." not in path:
                 path += "index.html"
 
@@ -80,16 +80,13 @@ class MyWebServer(socketserver.BaseRequestHandler):
             if ".html" in path or ".css" in path: # resolves the safety test
                 try: # exception handles if we get a path that doesn't exist in a folder
                     if ".html" in path:
-                        print("jtm,l")
                         data = readfile(folder_path)
                         self.request.sendall(bytearray(f"HTTP/1.1 200 OK\r\ncontent-type: text/html\r\nConnection: close\r\n\r\n\r\n{data}" , 'utf-8'))
 
                     elif ".css" in path:
-                        print("html")
                         data = readfile(folder_path)
                         self.request.sendall(bytearray(f"HTTP/1.1 200 OK\r\ncontent-type: text/css\r\nConnection: close\r\n\r\n\r\n{data}" , 'utf-8'))
                 except:
-                    print("hio")
                     self.request.sendall(bytearray(
                                 "HTTP/1.1 404 NOT FOUND\r\nConnection: close\r\n\r\n\r\n", 'utf-8'))
             else: 
